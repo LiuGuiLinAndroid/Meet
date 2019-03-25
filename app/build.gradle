@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+    useLibrary 'org.apache.http.legacy'
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.liuguilin.meet"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -16,8 +17,16 @@ android {
         }
     }
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'cn.bmob.android:bmob-im:2.1.1@aar'
+    implementation 'cn.bmob.android:bmob-sdk:3.6.3'
 }
