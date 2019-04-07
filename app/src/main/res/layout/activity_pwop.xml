@@ -74,7 +74,17 @@
 
     </LinearLayout>
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_forget_tips"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:text="@string/str_forget_tips"
+        android:layout_height="wrap_content" />
+
     <Button
+        style="@style/Common_Button_Style"
         android:layout_margin="10dp"
         android:id="@+id/btn_op"
         android:layout_width="match_parent"

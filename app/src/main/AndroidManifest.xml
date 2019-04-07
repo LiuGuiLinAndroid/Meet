@@ -50,6 +50,10 @@
 
         <activity android:name=".ui.PwOpActivity"/>
 
+        <activity android:name=".ui.SettingActivity"/>
+
+        <activity android:name=".ui.ChangePwActivity"/>
+
         <receiver android:name="cn.bmob.newim.core.ConnectChangeReceiver" >
             <intent-filter>
                 <action android:name="cn.bmob.action.RECONNECT" />

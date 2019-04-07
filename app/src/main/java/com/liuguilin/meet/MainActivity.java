@@ -1,10 +1,10 @@
 package com.liuguilin.meet;
 
-import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,11 +12,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.liuguilin.meet.base.BaseActivity;
+import com.liuguilin.meet.entity.Constans;
 import com.liuguilin.meet.fragment.FriendFragment;
 import com.liuguilin.meet.fragment.MeFragment;
 import com.liuguilin.meet.fragment.NewsFragment;
 import com.liuguilin.meet.fragment.SessionFragment;
+import com.liuguilin.meet.im.IMSDK;
+import com.liuguilin.meet.im.IMUser;
 import com.liuguilin.meet.manager.EventManager;
+import com.liuguilin.meet.ui.SettingActivity;
+import com.liuguilin.meet.utils.IMLog;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -89,6 +97,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mMeTransaction.add(R.id.mMainLayout, mMeFragment);
             mMeTransaction.commit();
         }
+
+        checkPhone();
+    }
+
+    /**
+     * 检查号码
+     */
+    private void checkPhone() {
+        IMUser imUser = IMSDK.getCurrentUser();
+        if(imUser != null){
+            String phone = imUser.getMobilePhoneNumber();
+            IMLog.i("phone:" + phone);
+            if(TextUtils.isEmpty(phone)){
+                imUser.setMobilePhoneNumber(imUser.getUsername());
+                IMSDK.updateUser(imUser, new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+
+                    }
+                });
+            }
+        }
     }
 
     private void initView() {
@@ -118,6 +148,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ll_friend.setOnClickListener(this);
         ll_news.setOnClickListener(this);
         ll_me.setOnClickListener(this);
+        title_right_text.setOnClickListener(this);
 
         checkMainTab(0);
     }
@@ -129,6 +160,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             hideAllFragment(transaction);
             transaction.show(fragment);
             transaction.commitAllowingStateLoss();
+            Constans.mCurrentFragment = fragment;
         }
     }
 
@@ -168,7 +200,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.ll_session:
                 checkMainTab(0);
-            break;
+                 break;
             case R.id.ll_friend:
                 checkMainTab(1);
                 break;
@@ -177,6 +209,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.ll_me:
                 checkMainTab(3);
+                break;
+            case R.id.title_right_text:
+                if(Constans.mCurrentFragment instanceof SessionFragment){
+
+                }else if(Constans.mCurrentFragment instanceof  MeFragment){
+                    startActivity(new Intent(this, SettingActivity.class));
+                }
                 break;
         }
     }

@@ -17,6 +17,7 @@ import com.liuguilin.meet.base.BaseActivity;
 import com.liuguilin.meet.im.IMSDK;
 import com.liuguilin.meet.im.IMUser;
 import com.liuguilin.meet.manager.DialogManager;
+import com.liuguilin.meet.utils.SharePreUtils;
 import com.liuguilin.meet.view.DialogView;
 
 import cn.bmob.v3.exception.BmobException;
@@ -26,7 +27,7 @@ import cn.bmob.v3.listener.SaveListener;
  * FileName: LoginActivity
  * Founder: 刘桂林
  * Create Date: 2019/3/25 22:15
- * Profile: 18679606764 123456
+ * Profile: 18679606764 456789
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -80,6 +81,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         include_title_iv_back.setVisibility(View.GONE);
         include_title_text.setText(getString(R.string.str_login_login));
         title_right_text.setVisibility(View.GONE);
+
+        String account = SharePreUtils.getInstance().getString("account");
+        if(!TextUtils.isEmpty(account)){
+            et_account.setText(account);
+        }
     }
 
     @Override
@@ -118,7 +124,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * 登录
      */
     private void loginAccount() {
-        String account = et_account.getText().toString().trim();
+        final String account = et_account.getText().toString().trim();
         if (TextUtils.isEmpty(account)) {
             Toast.makeText(this, getString(R.string.str_toast_account_null), Toast.LENGTH_SHORT).show();
             return;
@@ -137,6 +143,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if(e == null){
                     Toast.makeText(LoginActivity.this, getString(R.string.str_login_success), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    SharePreUtils.getInstance().putString("account",account);
                     finish();
                 }else{
                     Toast.makeText(LoginActivity.this, getString(R.string.str_login_fail) + e.toString(), Toast.LENGTH_SHORT).show();

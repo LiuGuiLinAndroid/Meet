@@ -57,6 +57,16 @@ public class IMSDK {
     }
 
     /**
+     * 手机号码重置密码
+     * @param code
+     * @param newPassword
+     * @param listener
+     */
+    public static void resetPasswordBySMSCode(String code, String newPassword,UpdateListener listener){
+        BmobUser.resetPasswordBySMSCode(code,newPassword,listener);
+    }
+
+    /**
      * 注册
      * @param userName
      * @param password
@@ -82,4 +92,29 @@ public class IMSDK {
         user.login(listener);
     }
 
+    /**
+     * 更新用户
+     * @param imUser
+     * @param listener
+     */
+    public static void updateUser(IMUser imUser,UpdateListener listener){
+        imUser.update(listener);
+    }
+
+    /**
+     * 退出登录
+     */
+    public static void exitUser(){
+        BmobUser.logOut();
+    }
+
+    /**
+     * 修改密码
+     * @param oldPw
+     * @param newPw
+     * @param listener
+     */
+    public static void updatePassword(String oldPw,String newPw,UpdateListener listener){
+        BmobUser.updateCurrentUserPassword(oldPw,newPw,listener);
+    }
 }

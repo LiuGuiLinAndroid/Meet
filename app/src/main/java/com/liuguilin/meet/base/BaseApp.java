@@ -3,6 +3,7 @@ package com.liuguilin.meet.base;
 import android.app.Application;
 
 import com.liuguilin.meet.receiver.IMHandlerReceiver;
+import com.liuguilin.meet.utils.SharePreUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,6 +30,7 @@ public class BaseApp extends Application {
         if (getApplicationInfo().packageName.equals(getMyProcessName())){
             BmobIM.init(this);
             BmobIM.registerDefaultMessageHandler(new IMHandlerReceiver(this));
+            SharePreUtils.getInstance().initSp(this);
         }
     }
 

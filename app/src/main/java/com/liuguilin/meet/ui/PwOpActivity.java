@@ -37,6 +37,7 @@ public class PwOpActivity extends BaseActivity implements View.OnClickListener {
     private EditText et_code;
     private TextView tv_get_code;
     private Button btn_op;
+    private TextView tv_forget_tips;
 
     private static int TYPE = -1;
 
@@ -82,6 +83,7 @@ public class PwOpActivity extends BaseActivity implements View.OnClickListener {
         et_code = (EditText) findViewById(R.id.et_code);
         tv_get_code = (TextView) findViewById(R.id.tv_get_code);
         btn_op = (Button) findViewById(R.id.btn_op);
+        tv_forget_tips = findViewById(R.id.tv_forget_tips);
 
         include_title_iv_back.setOnClickListener(this);
         btn_op.setOnClickListener(this);
@@ -93,10 +95,12 @@ public class PwOpActivity extends BaseActivity implements View.OnClickListener {
             TYPE = 0;
             include_title_text.setText(getString(R.string.str_reg_reg));
             btn_op.setText(getString(R.string.str_reg_reg));
+            tv_forget_tips.setVisibility(View.GONE);
         } else if (type.equals("forget")) {
             TYPE = 1;
             include_title_text.setText(getString(R.string.str_forget_pw));
             btn_op.setText(getString(R.string.str_forget_reset));
+            tv_forget_tips.setVisibility(View.VISIBLE);
         }
     }
 
@@ -163,13 +167,7 @@ public class PwOpActivity extends BaseActivity implements View.OnClickListener {
             return;
         }
 
-        //注册
-        if (TYPE == 0) {
-            verifySmsCode(phone, password, code);
-            //忘记密码
-        } else if (TYPE == 1) {
-
-        }
+        verifySmsCode(phone, password, code);
     }
 
     /**
@@ -179,18 +177,43 @@ public class PwOpActivity extends BaseActivity implements View.OnClickListener {
      * @param password
      * @param code
      */
-    private void verifySmsCode(final String phone, final String password, String code) {
+    private void verifySmsCode(final String phone, final String password, final String code) {
         IMSDK.verifySmsCode(phone, code, new UpdateListener() {
             @Override
             public void done(BmobException e) {
                 if (e == null) {
-                    signUp(phone, password);
+                    //注册
+                    if (TYPE == 0) {
+                        signUp(phone, password);
+                        //忘记密码
+                    } else if (TYPE == 1) {
+                        forgetPw(code,password);
+                    }
                 } else {
                     Toast.makeText(PwOpActivity.this, getString(R.string.str_toast_code_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+    }
+
+    /**
+     * 重置密码
+     * @param code
+     * @param password
+     */
+    private void forgetPw(String code, String password) {
+        IMSDK.resetPasswordBySMSCode(code, password, new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e == null){
+                    Toast.makeText(PwOpActivity.this, getString(R.string.str_toast_reset_success), Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(PwOpActivity.this, getString(R.string.str_toast_reset_fail), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /**

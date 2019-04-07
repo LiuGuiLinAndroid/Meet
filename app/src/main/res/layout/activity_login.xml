@@ -57,6 +57,7 @@
         android:textColor="@color/colorPrimary" />
 
     <Button
+        style="@style/Common_Button_Style"
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
