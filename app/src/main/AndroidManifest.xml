@@ -54,6 +54,21 @@
 
         <activity android:name=".ui.ChangePwActivity"/>
 
+        <activity android:name=".ui.QrCodeActivity"/>
+
+        <activity android:name=".ui.UserInfoActivity"/>
+
+        <!--相机兼容7.0-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.liuguilin.meet.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
         <receiver android:name="cn.bmob.newim.core.ConnectChangeReceiver" >
             <intent-filter>
                 <action android:name="cn.bmob.action.RECONNECT" />

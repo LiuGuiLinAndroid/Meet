@@ -16,17 +16,17 @@ public class IMUser extends BmobUser implements Serializable {
     //昵称
     private String nickname;
     //年龄
-    private int age;
+    private int age = 0;
     //性别
     private boolean sex;
     //头像
     private BmobFile avatar;
     //生日
-    private String birthday;
+    private String birthday = "";
     //电话
     private String phone;
     //地区
-    private String city;
+    private String city = "";
     //签名
     private String desc;
 
